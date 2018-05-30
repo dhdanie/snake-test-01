@@ -26,7 +26,8 @@ public class GameClock extends ManagedStateRunnable {
 	private List<TickListener> tickListeners;
 
 	private void processStateStarting() {
-		this.executor = Executors.newFixedThreadPool( 10 );
+		this.executor = Executors.newSingleThreadExecutor();
+
 		this.currentTime = 0;
 		this.shutdownIndicator = false;
 		this.startedIndicator  = true;
@@ -97,7 +98,7 @@ public class GameClock extends ManagedStateRunnable {
 		if( this.isStarted() ) {
 			return;
 		}
-		new Thread( this ).start();
+		new Thread( this, "gameclock" ).start();
 	}
 
 	public GameClock( int id, long tickInterval ) {
@@ -126,7 +127,6 @@ public class GameClock extends ManagedStateRunnable {
 		GameClock clock = new GameClock( 1, 1000 );
 
 		TickListener listener = currentTime -> {
-			System.out.println( "The current time is " + currentTime );
 			if( currentTime > 2 ) {
 				clock.shutdown();
 			}

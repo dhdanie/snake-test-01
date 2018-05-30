@@ -94,11 +94,10 @@ public class SnakeFrame extends JFrame {
 	}
 
 	public static void main( String [] args ) throws Exception {
+		SnakeFrame snakeFrame = new SnakeFrame();
+		GameClockManager.startGameClock();
 		EventQueue.invokeLater( () -> {
-			SnakeFrame snakeFrame = new SnakeFrame();
-
 			snakeFrame.setVisible( true );
-			GameClockManager.startGameClock();
 		} );
 	}
 }

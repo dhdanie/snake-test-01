@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SnakeSurface extends JPanel implements TickListener {
-	private long currentTime;
 	private Snake snake;
 
 	public SnakeSurface( Snake snake ) {
@@ -26,8 +25,6 @@ public class SnakeSurface extends JPanel implements TickListener {
 
 	@Override
 	public void onTick( long currentTime ) {
-		this.currentTime = currentTime;
-
 		this.snake.moveSnake();
 
 		this.repaint();

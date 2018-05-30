@@ -18,7 +18,7 @@ public class GameClockManager {
 	private GameClock gameClock;
 
 	private GameClockManager() {
-		this.gameClock = new GameClock( -1, 50 );
+		this.gameClock = new GameClock( -1, 100 );
 	}
 
 	private void _addTickListener( TickListener tickListener ) {
