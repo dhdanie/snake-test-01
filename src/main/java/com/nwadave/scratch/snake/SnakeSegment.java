@@ -1,13 +1,8 @@
 package com.nwadave.scratch.snake;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class SnakeSegment {
-	public static final float LOCATION_MULTIPLIER = 10;
-
-	public static final float SNAKE_SEG_WIDTH  = 1;
-	public static final float SNAKE_SEG_HEIGHT = 1;
 
 	private int col;
 	private int row;
@@ -34,6 +29,10 @@ public class SnakeSegment {
 		return remainingLife;
 	}
 
+	public void setRemainingLife( int remainingLife ) {
+		this.remainingLife = remainingLife;
+	}
+
 	public SnakeSegment getNextSegment() {
 		return nextSegment;
 	}
@@ -47,9 +46,6 @@ public class SnakeSegment {
 	}
 
 	public Shape toShape() {
-		float widthActual = SNAKE_SEG_WIDTH * LOCATION_MULTIPLIER;
-		float heightActual = SNAKE_SEG_HEIGHT * LOCATION_MULTIPLIER;
-
-		return new Rectangle2D.Float( this.col * LOCATION_MULTIPLIER, this.row * LOCATION_MULTIPLIER, widthActual, heightActual );
+		return ShapeFactory.getShapeForItem( GridItem.SNAKE_SEGMENT, this.col, this.row );
 	}
 }

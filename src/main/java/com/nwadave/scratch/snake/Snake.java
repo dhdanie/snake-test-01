@@ -7,16 +7,20 @@ public class Snake {
 	private Direction currentDirection;
 	private int currentLength;
 	private SnakeSegment head;
+	private SnakeGrid grid;
 
 	public Snake( Direction currentDirection, int col, int row, int initialLength ) {
 		this.currentDirection = currentDirection;
 		this.currentLength = initialLength;
+		this.grid = SnakeGridFactory.getSnakeGrid();
 
 		for( int i = 1; i <= initialLength; i++ ) {
 			int placeRow = row + (initialLength - i);
 
 			SnakeSegment prevHead = this.head;
 			this.head = new SnakeSegment( col, placeRow, i, prevHead );
+
+			this.grid.placeItem( col, placeRow, GridItem.SNAKE_SEGMENT );
 		}
 	}
 
@@ -39,7 +43,7 @@ public class Snake {
 		}
 	}
 
-	public void moveSnake() {
+	public void moveSnake() throws GameOverException {
 		int nextCol;
 		int nextRow;
 		switch( this.currentDirection ) {
@@ -65,19 +69,55 @@ public class Snake {
 				break;
 		}
 
+		//Only complete move if target col/row is within bounds and unoccupied by snake segment
+		if(
+				nextCol < 0
+				|| nextCol >= AppContext.COL_COUNT
+				|| nextRow < 0
+				|| nextRow >= AppContext.ROW_COUNT
+		) {
+			//Off board so die
+			throw new GameOverException( "Game Over - Tried to move off board" );
+		}
+
 		SnakeSegment prevHead = this.head;
 
-		this.head = new SnakeSegment( nextCol, nextRow, this.currentLength, prevHead );
-
 		SnakeSegment segment = prevHead;
-		SnakeSegment prevSegment = this.head;
 		while( segment != null ) {
 			segment.ageSegment();
 			if( segment.getRemainingLife() < 1 ) {
-				prevSegment.setNextSegment( null );
+				SnakeSegment newTail = segment;
+				while( (segment != null) && (segment.getRemainingLife() < 1) ) {
+					this.grid.removeItemAt( segment.getCol(), segment.getRow() );
+					segment = segment.getNextSegment();
+				}
+				newTail.setNextSegment( null );
 				break;
+			} else {
+				segment = segment.getNextSegment();
 			}
-			prevSegment = segment;
+		}
+		//dead segments pruned, all segments aged
+		//Check to see if element exists at nextCol/nextRow
+		//If so, bad or good?  Bad - Game Over, Good - TBD...?
+		GridItem existingItem = this.grid.itemAt( nextCol, nextRow );
+		if( existingItem != null ) {
+			SnakeItemCollisionHandler collisionHandler = this.getCollisionHandlerForItemType( existingItem );
+
+			collisionHandler.handleSnakeItemCollision( nextCol, nextRow, existingItem, this );
+		}
+
+		this.head = new SnakeSegment( nextCol, nextRow, this.currentLength, prevHead );
+		this.grid.placeItem( nextCol, nextRow, GridItem.SNAKE_SEGMENT );
+	}
+
+	public void elongate( int amount ) {
+		this.currentLength += amount;
+
+		SnakeSegment segment = this.head;
+		while( segment != null ) {
+			segment.setRemainingLife( segment.getRemainingLife() + amount );
+
 			segment = segment.getNextSegment();
 		}
 	}
@@ -95,5 +135,9 @@ public class Snake {
 			default:
 				return false;
 		}
+	}
+
+	private SnakeItemCollisionHandler getCollisionHandlerForItemType( GridItem item ) throws GameOverException {
+		return CollisionHandlerFactory.getCollisionHandlerForItem( item );
 	}
 }

@@ -7,6 +7,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import static com.nwadave.scratch.snake.AppContext.*;
+
 public class SnakeFrame extends JFrame {
 	private Snake snake;
 	private SnakeSurface snakeSurface;
@@ -16,13 +18,18 @@ public class SnakeFrame extends JFrame {
 	}
 
 	private void initUi() {
-		this.snake = new Snake( Direction.UP, 25, 25, 4 );
+		int midpointCol = COL_COUNT / 2;
+		int midpointRow = ROW_COUNT / 2;
+		this.snake = new Snake( Direction.UP, midpointCol, midpointRow, SNAKE_INITIAL_LENGTH );
 		this.snakeSurface = new SnakeSurface( snake );
 
 		this.add( this.snakeSurface );
 
 		this.setTitle( "Snake" );
-		this.setSize( 500, 500 );
+
+		int width = (int)(COL_COUNT * LOCATION_MULTIPLIER);
+		int height = (int)(ROW_COUNT * LOCATION_MULTIPLIER);
+		this.setSize( width, height );
 		this.setLocationRelativeTo( null );
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 

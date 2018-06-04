@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.nwadave.scratch.snake.AppContext.TICK_FREQUENCY;
+
 public class GameClock extends ManagedStateRunnable {
 	private static final State STATE_STARTING = States.STATE_STARTING;
 	private static final State STATE_RUNNING  = new State().setId( 900 ).setName( "RUNNING" );
@@ -64,7 +66,7 @@ public class GameClock extends ManagedStateRunnable {
 		this.executor.shutdown();
 		while( ! this.executor.isTerminated() ) {
 			try {
-				Thread.sleep( 250 );
+				Thread.sleep( TICK_FREQUENCY );
 			} catch( InterruptedException e ) {
 				//Not a problem
 			}
