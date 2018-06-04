@@ -1,7 +1,5 @@
 package com.nwadave.scratch.snake;
 
-import java.awt.*;
-
 public class SnakeSegment {
 
 	private int col;
@@ -43,9 +41,5 @@ public class SnakeSegment {
 
 	public void setNextSegment( SnakeSegment nextSegment ) {
 		this.nextSegment = nextSegment;
-	}
-
-	public Shape toShape() {
-		return ShapeFactory.getShapeForItem( GridItem.SNAKE_SEGMENT, this.col, this.row );
 	}
 }

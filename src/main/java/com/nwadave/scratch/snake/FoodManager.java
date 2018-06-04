@@ -1,15 +1,8 @@
 package com.nwadave.scratch.snake;
 
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 public class FoodManager implements SnakeItemCollisionHandler, TickListener {
-	public static final float LOCATION_MULTIPLIER = 10;
-
-	public static final float FOOD_WIDTH  = 1;
-	public static final float FOOD_HEIGHT = 1;
-
 	private SnakeGrid grid;
 	private int minFoodAmount;
 	private Random random;
@@ -32,13 +25,6 @@ public class FoodManager implements SnakeItemCollisionHandler, TickListener {
 		snake.elongate( 1 );
 
 		this.grid.removeItemAt( col, row );
-	}
-
-	public Shape getFoodShape( int col, int row ) {
-		float widthActual = FOOD_WIDTH * LOCATION_MULTIPLIER;
-		float heightActual = FOOD_HEIGHT * LOCATION_MULTIPLIER;
-
-		return new Rectangle2D.Float( col * LOCATION_MULTIPLIER, row * LOCATION_MULTIPLIER, widthActual, heightActual );
 	}
 
 	@Override

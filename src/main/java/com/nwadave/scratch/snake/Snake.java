@@ -1,8 +1,5 @@
 package com.nwadave.scratch.snake;
 
-import java.awt.*;
-import java.util.ArrayList;
-
 public class Snake {
 	private Direction currentDirection;
 	private int currentLength;
@@ -22,19 +19,6 @@ public class Snake {
 
 			this.grid.placeItem( col, placeRow, GridItem.SNAKE_SEGMENT );
 		}
-	}
-
-	public ArrayList<Shape> toShapes() {
-		ArrayList<Shape> snakeShapes = new ArrayList<>();
-
-		SnakeSegment segment = this.head;
-		while( segment != null ) {
-			snakeShapes.add( segment.toShape() );
-
-			segment = segment.getNextSegment();
-		}
-
-		return snakeShapes;
 	}
 
 	public void setDirection( Direction direction ) {
