@@ -4,7 +4,7 @@ public class AppContext {
 	public static final int COL_COUNT = 50;
 	public static final int ROW_COUNT = 50;
 
-	public static final long TICK_FREQUENCY = 250;
+	public static final long TICK_FREQUENCY = 100;
 
 	public static final float LOCATION_MULTIPLIER = 10;
 
