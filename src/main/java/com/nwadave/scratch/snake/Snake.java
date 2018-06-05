@@ -2,12 +2,14 @@ package com.nwadave.scratch.snake;
 
 public class Snake {
 	private Direction currentDirection;
+	private Direction staticDirection;
 	private int currentLength;
 	private SnakeSegment head;
 	private SnakeGrid grid;
 
 	public Snake( Direction currentDirection, int col, int row, int initialLength ) {
 		this.currentDirection = currentDirection;
+		this.staticDirection = currentDirection;
 		this.currentLength = initialLength;
 		this.grid = SnakeGridFactory.getSnakeGrid();
 
@@ -22,7 +24,7 @@ public class Snake {
 	}
 
 	public void setDirection( Direction direction ) {
-		if( this.isPermittedDirectionChange( direction ) ) {
+		if( this.isPermittedDirectionChange( this.staticDirection, direction ) ) {
 			this.currentDirection = direction;
 		}
 	}
@@ -30,6 +32,7 @@ public class Snake {
 	public void moveSnake() throws GameOverException {
 		int nextCol;
 		int nextRow;
+		this.staticDirection = this.currentDirection;
 		switch( this.currentDirection ) {
 			case UP:
 				nextCol = this.head.getCol();
@@ -116,6 +119,21 @@ public class Snake {
 				return (this.currentDirection != Direction.RIGHT);
 			case RIGHT:
 				return (this.currentDirection != Direction.LEFT);
+			default:
+				return false;
+		}
+	}
+
+	private boolean isPermittedDirectionChange( Direction fromDirection, Direction toDirection) {
+		switch( toDirection ) {
+			case UP:
+				return (fromDirection != Direction.DOWN);
+			case DOWN:
+				return (fromDirection != Direction.UP);
+			case LEFT:
+				return (fromDirection != Direction.RIGHT);
+			case RIGHT:
+				return (fromDirection != Direction.LEFT);
 			default:
 				return false;
 		}

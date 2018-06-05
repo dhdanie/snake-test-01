@@ -27,8 +27,8 @@ public class SnakeFrame extends JFrame {
 
 		this.setTitle( "Snake" );
 
-		int width = (int)(COL_COUNT * LOCATION_MULTIPLIER);
-		int height = (int)(ROW_COUNT * LOCATION_MULTIPLIER);
+		int width = (int)((COL_COUNT + 2) * LOCATION_MULTIPLIER);
+		int height = (int)((ROW_COUNT + 4) * LOCATION_MULTIPLIER);
 		this.setSize( width, height );
 		this.setLocationRelativeTo( null );
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
