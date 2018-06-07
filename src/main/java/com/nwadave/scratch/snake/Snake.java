@@ -5,7 +5,7 @@ public class Snake {
 	private Direction staticDirection;
 	private int currentLength;
 	private SnakeSegment head;
-	private SnakeGrid grid;
+	public SnakeGrid grid;
 
 	public Snake( Direction currentDirection, int col, int row, int initialLength ) {
 		this.currentDirection = currentDirection;
@@ -26,6 +26,17 @@ public class Snake {
 	public void setDirection( Direction direction ) {
 		if( this.isPermittedDirectionChange( this.staticDirection, direction ) ) {
 			this.currentDirection = direction;
+		}
+	}
+
+	public void clearBoard() {
+		AppContext ac = new AppContext();
+		for(int i = 0; i < ac.COL_COUNT; i++) {
+			for(int j = 0; j < ac.ROW_COUNT; j++) {
+				if(this.grid.itemAt(i, j) != null) {
+					this.grid.removeItemAt(i, j);
+				}
+			}
 		}
 	}
 
