@@ -10,7 +10,9 @@ public class ShapeFactory {
 		switch( item ) {
 			case SNAKE_SEGMENT:
 				return getShapeForSnakeSegment( col, row );
-			case FOOD:
+			case APPLE:
+				return getShapeForFood( col, row );
+			case BANANA:
 				return getShapeForFood( col, row );
 			default:
 				return null;

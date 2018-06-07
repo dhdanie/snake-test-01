@@ -18,17 +18,16 @@ public class SnakeFrame extends JFrame {
 	}
 
 	private void initUi() {
-		int midpointCol = COL_COUNT / 2;
-		int midpointRow = ROW_COUNT / 2;
-		this.snake = new Snake( Direction.UP, midpointCol, midpointRow, SNAKE_INITIAL_LENGTH );
-		this.snakeSurface = new SnakeSurface( snake );
+		this.snakeSurface = new SnakeSurface();
+
+		this.initSnake();
 
 		this.add( this.snakeSurface );
 
 		this.setTitle( "Snake" );
 
-		int width = (int)((COL_COUNT + 2) * LOCATION_MULTIPLIER);
-		int height = (int)((ROW_COUNT + 4) * LOCATION_MULTIPLIER);
+		int width = (int)(((COL_COUNT + 2) * LOCATION_MULTIPLIER) - 4);
+		int height = (int)(((ROW_COUNT + 4) * LOCATION_MULTIPLIER) - 1);
 		this.setSize( width, height );
 		this.setLocationRelativeTo( null );
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -53,6 +52,12 @@ public class SnakeFrame extends JFrame {
 						break;
 					case 40: //down
 						SnakeFrame.this.snake.setDirection( Direction.DOWN );
+						break;
+					case 82: //r or retry
+						if(snakeSurface.isGameOver() != true) {
+							break;
+						}
+						initSnake();
 						break;
 				}
 			}
@@ -100,9 +105,16 @@ public class SnakeFrame extends JFrame {
 		} );
 	}
 
+	private void initSnake() {
+		int midpointCol = COL_COUNT / 2;
+		int midpointRow = ROW_COUNT / 2;
+		this.snake = new Snake( Direction.UP, midpointCol, midpointRow, SNAKE_INITIAL_LENGTH );
+		this.snakeSurface.initSnakeSurface( snake );
+		GameClockManager.startGameClock();
+	}
+
 	public static void main( String [] args ) throws Exception {
 		SnakeFrame snakeFrame = new SnakeFrame();
-		GameClockManager.startGameClock();
 		EventQueue.invokeLater( () -> {
 			snakeFrame.setVisible( true );
 		} );

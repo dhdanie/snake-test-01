@@ -21,7 +21,8 @@ public class CollisionHandlerFactory {
 	private static void initializeHandlers() {
 		handlers = new HashMap<>();
 
-		handlers.put( GridItem.FOOD, FoodManagerFactory.getFoodManager() );
+		handlers.put( GridItem.APPLE, FoodManagerFactory.getFoodManager() );
+		handlers.put( GridItem.BANANA, FoodManagerFactory.getFoodManager() );
 		handlers.put( GridItem.SNAKE_SEGMENT, null );//TODO
 	}
 }

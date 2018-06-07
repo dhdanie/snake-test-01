@@ -18,18 +18,22 @@ public class FoodManager implements SnakeItemCollisionHandler, TickListener {
 
 	@Override
 	public void handleSnakeItemCollision( int col, int row, GridItem item, Snake snake ) {
-		if( item != GridItem.FOOD ) {
+		if( item != GridItem.APPLE && item != GridItem.BANANA ) {
 			return;
 		}
 
-		snake.elongate( 1 );
+		if( item == GridItem.APPLE ) {
+			snake.elongate(1);
+		} else {
+			snake.elongate(3);
+		}
 
 		this.grid.removeItemAt( col, row );
 	}
 
 	@Override
 	public void onTick( long currentTime ) {
-		int currentCount = this.grid.getItemCount( GridItem.FOOD );
+		int currentCount = this.grid.getItemCount( GridItem.APPLE ) + this.grid.getItemCount( GridItem.BANANA );
 		while( currentCount < this.minFoodAmount ) {
 			this.addFoodItem();
 
@@ -40,9 +44,17 @@ public class FoodManager implements SnakeItemCollisionHandler, TickListener {
 	private void addFoodItem() {
 		int addCol = this.getAddCol();
 		int addRow = this.getAddRow();
-		while( ! this.grid.placeItem( addCol, addRow, GridItem.FOOD ) ) {
-			addCol = this.getAddCol();
-			addRow = this.getAddRow();
+		int randNum = this.random.nextInt( 3 );
+		if( randNum != 2 ) {
+			while( ! this.grid.placeItem( addCol, addRow, GridItem.APPLE ) ) {
+				addCol = this.getAddCol();
+				addRow = this.getAddRow();
+			}
+		} else {
+			while( ! this.grid.placeItem( addCol, addRow, GridItem.BANANA ) ) {
+				addCol = this.getAddCol();
+				addRow = this.getAddRow();
+			}
 		}
 	}
 

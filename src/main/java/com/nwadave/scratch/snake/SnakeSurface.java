@@ -8,9 +8,15 @@ public class SnakeSurface extends JPanel implements TickListener {
 	private Snake snake;
 	private SnakeGrid grid;
 
-	public SnakeSurface( Snake snake ) {
+	public SnakeSurface() {
 		GameClockManager.addTickListener( this );
+	}
 
+	public boolean isGameOver() {
+		return this.gameOver;
+	}
+
+	public void initSnakeSurface( Snake snake ) {
 		this.snake = snake;
 		this.gameOver = false;
 		this.grid = SnakeGridFactory.getSnakeGrid();
@@ -22,6 +28,7 @@ public class SnakeSurface extends JPanel implements TickListener {
 		super.paintComponent( graphics );
 
 		Graphics2D g2d = (Graphics2D)graphics;
+		g2d.setColor(Color.BLACK);
 
 		if( this.gameOver ) {
 			GameClockManager.stopGameClock();
@@ -39,13 +46,25 @@ public class SnakeSurface extends JPanel implements TickListener {
 			int xcoord = 250 - (totalWidth / 2);
 			int ycoord = 250 - (metrics.getHeight() / 2);
 			g2d.drawString( "Game Over", xcoord, ycoord );
+			ycoord = ycoord + 20;
+			g2d.drawString( "Press r to Retry", xcoord, ycoord );
 		} else {
 			for( int i = 0; i < this.grid.getNumCols(); i++ ) {
 				for( int j = 0; j < this.grid.getNumRows(); j++ ) {
 					GridItem itemAt = this.grid.itemAt( i, j );
 					if( itemAt != null ) {
 						Shape shape = ShapeFactory.getShapeForItem( itemAt, i, j );
-						g2d.fill( shape );
+						if(this.grid.itemAt( i, j ) == GridItem.APPLE) {
+							g2d.setColor(Color.RED);
+							g2d.fill( shape );
+							g2d.setColor(Color.BLACK);
+						} else if(this.grid.itemAt( i, j ) == GridItem.BANANA) {
+							g2d.setColor(Color.ORANGE);
+							g2d.fill( shape );
+							g2d.setColor(Color.BLACK);
+						} else {
+							g2d.fill(shape);
+						}
 					}
 				}
 			}
